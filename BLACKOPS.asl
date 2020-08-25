@@ -4,10 +4,10 @@ state("BlackOps")
 	long loading1: 0x1656804;	
 }
 
-
-startup {
-vars.missions = new Dictionary<string,string> { 
-		{"vorkuta", "Vorkuta"},
+startup 
+{
+	vars.missions = new Dictionary<string,string> { 
+	    {"vorkuta", "Vorkuta"},
 		{"pentagon", "USDD"},
 		{"flashpoint", "Executive Order"},
 		{"khe_sanh", "SOG"},
@@ -23,29 +23,41 @@ vars.missions = new Dictionary<string,string> {
 		{"underwaterbase", "Redemption"},
 		{"outro", "Menu Screen"},
 		}; 
-		  vars.missionList = new List<string>();
-		   foreach (var Tag in vars.missions) {
-        settings.Add(Tag.Key, true, Tag.Value);
-        vars.missionList.Add(Tag.Key); };
-		vars.splits = new List<string>();
- }
- 
- start
-{
-	 return ((current.map == "cuba") && (old.map == "frontend"));
+    foreach (var Tag in vars.missions) {
+    settings.Add(Tag.Key, true, Tag.Value);
+    }
 }
 
- split {
-        return (vars.missionList.Contains(current.map) && (current.map != old.map));
- }
- 
- reset
+init 
 {
-   return ((current.map == "frontend") && (old.map != "frontend"));
- 
+	vars.doneMaps = new List<string>(); 
+}
+
+start
+{
+    if ((current.map == "cuba") && (current.loading1 != 0)) {
+        vars.doneMaps.Clear();
+        return true;
+    }
 }
 
 isLoading
 {
 	return (current.loading1 == 0);
+}
+
+
+reset
+{
+	return (current.map == "frontend");
+}
+
+split
+{
+    if (current.map != old.map) {
+	    if (settings[current.map]) {
+	            vars.doneMaps.Add(old.map);
+				return true;
+				}
+        }			
 }
