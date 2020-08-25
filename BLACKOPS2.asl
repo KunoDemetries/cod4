@@ -2,13 +2,13 @@ state("t6sp")
 {
 	string65 map : 0xF4E62C;
 	double loading1 : 0x1A002C0;
-	string90 Bussy : 0xC18138;
+	string90 map2 : 0xC18138;
 	int exit : 0x2578DF0;
-	//int oldwounds : 0x19FEF0C;
 }
 
-startup {
-vars.missions = new Dictionary<string,string> {  
+startup
+{
+    vars.missions = new Dictionary<string,string> {  
 		{"monsoon.all.sabs", "Celerium"},
 		{"afghanistan.all.sabs", "Old Wounds"},
 		{"nicaragua.all.sabs", "Time and Fate"},
@@ -19,29 +19,57 @@ vars.missions = new Dictionary<string,string> {
 		{"blackout.all.sabs", "Odysseus"},
 		{"la_1.all.sabs", "Cordis Die"},
 		{"haiti.all.sabs", "Judgment Day"},
-		}; 
-		  vars.missionList = new List<string>();
+	}; 
 		   foreach (var Tag in vars.missions) {
         settings.Add(Tag.Key, true, Tag.Value);
-        vars.missionList.Add(Tag.Key); };
-		vars.splits = new List<string>();
- }
- 
- start
-{
-	 return ((current.map == "angola.all.sabs") && (old.map != "angola.all.sabs"));
+           }
+           
+    vars.loadings = new Dictionary<string,string> {
+        {"fronted.english.sabs","cutscene1"},
+        {"fronted.all.sabs","cutscene2"},
+        {"ts_afghanistan.all.sabs","cutscene3"},
+    };
+        vars.missions1A = new List<string>();
+        foreach (var Tag in vars.loadings) {
+        vars.missions1A.Add(Tag.Key);
+        }
 }
 
- split {
-        return (vars.missionList.Contains(current.map) && (current.map != old.map)) || ((current.Bussy == "haiti_gump_endings") && (current.exit != 0));
- }
+init 
+{
+	vars.doneMaps = new List<string>(); 
+}
+
+start
+{
+    if ((current.map == "angola.all.sabs") && (current.loading1 != 0)) {
+        vars.doneMaps.Clear();
+        return true;
+    }
+}
 
 isLoading
 {
-	return ((current.loading1 == 0) && (current.Bussy != "nicaragua_gump_josefina"))
-	|| (current.map == "frontend.english.sabs") 
-	|| (current.map == "frontend.all.sabs") 
-	|| (current.map == "ts_afghanistan.all.sabs")
-	|| (current.Bussy == "su_rts_mp_dockside");
-	//|| ((current.oldwounds == 0) && (current.map == "afghanistan.all.sabs"))
+    if (current.loading1 == 0 && current.map2 != "nicaragua_gump_josefina") {
+        {
+            return true;
+        }
+    }
+    return    ((current.map2 == "su_rts_mp_dockside")) ||
+    (vars.missions1A.Contains(current.map));
+}
+
+split
+{
+    if (current.map != old.map) {
+	    if (settings[current.map]) {
+	            vars.doneMaps.Add(old.map);
+				return true;
+				}
+        }
+
+   if ((current.map2 == "haiti_gump_endings") && (current.exit != 0))
+   {
+       return true;
+   }		
 }
