@@ -114,7 +114,7 @@ split {
  
 reset {
 	//kuno's condition, seems sketchy but whatever i dont run this game if it works for yall thats good lol
-	return (current.map != old.map && current.map == "ui" && old.map != "coup");
+	return (current.map == "ui" && old.map != "coup");
 }
 
 gameTime {
