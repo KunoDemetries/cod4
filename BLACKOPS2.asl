@@ -50,20 +50,35 @@ start
 
 isLoading
 {
-    if (current.loading1 == 0 && (current.map2 != "nicaragua_gump_josefina")) {
+    if (current.loading1 == 0 && (current.map2 != "nicaragua_gump_josefina")) 
         {
             return true;
         }
-    }
+
+else 
+		{
+			return false;
+		}
+		
     if ((current.map2 == "su_rts_mp_dockside"))
 	{
 		return true; 
 	}
 
+else 
+		{
+			return false;
+		}
+
     if (vars.missions1A.Contains(current.map))
 	{
 		return true;
 	}
+
+else 
+		{
+			return false;
+		}
 }
 
 split
