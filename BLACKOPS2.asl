@@ -1,7 +1,7 @@
 state("t6sp")
 {
 	string65 map : 0xF4E62C;
-	double loading1 : 0x1A002C0;
+	int loading1 : 0x1A002C0;
 	string90 map2 : 0xC18138;
 	int exit : 0x2578DF0;
 }
