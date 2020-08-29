@@ -97,7 +97,7 @@ split {
 		}
 			
 		else {						//if map is NOT The Coup
-			if (settings[old.map]) {		//if setting for last map is enabled
+			if (settings[current.map]) {		//if setting for last map is enabled
 				vars.doneMaps.Add(old.map);	//add the last map to done splits list
 				return true;			//split
 			}
