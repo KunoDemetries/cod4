@@ -87,7 +87,7 @@ start {
 split {
 
 	if (current.map != old.map) {					//on map change
-		if (old.map == "coup") {				//if the last map was The Coup
+		if (current.map == "coup") {				//if the last map was The Coup. kuno note: Changed to do it on coup and not after it's skipped ae into the next level 
 			vars.currentTime = timer.CurrentTime.GameTime;	//set a variable to the value of current time
 			vars.coupOffset = true;				//add 4:44 to the timer
 			if (settings["coup"]) {				//if the split for The Coup is enabled
