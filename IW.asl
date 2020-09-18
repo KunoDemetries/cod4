@@ -58,5 +58,8 @@ split
 
 isLoading
 {
-	return (loading1 == 0);
+	return (current.loading1 == 0);
 }
+
+
+// v-meter iw7_ship.exe+1FDF420
