@@ -10,7 +10,8 @@ startup
     settings.Add("l1", false, "All Levels");
     settings.Add("l2", true, "WR Splits");
 
-   vars.missions5 = new Dictionary<string,string> { 
+	vars.missions5 = new Dictionary<string,string> 
+	{ 
         {"a1_robinson","Entering Robinson's house"},
         {"a1_robinson_storage","Storage Room"},
         {"a1_robinson_trainroom","Entering Training Room"},
@@ -33,13 +34,13 @@ startup
         {"a3_robinson","Robinson House Pre-Doris"},
         {"a3_industries","Doris Fight"},
     };
-   vars.missions5A = new List<string>();
-        foreach (var Tag in vars.missions5) {
-        settings.Add(Tag.Key, true, Tag.Value, "l1");
-        vars.missions5A.Add(Tag.Key);
-        };
+ 	foreach (var Tag in vars.missions5)
+	{
+		settings.Add(Tag.Key, true, Tag.Value, "l1");
+    };
 
- vars.missions1 = new Dictionary<string,string> { 
+	vars.missions1 = new Dictionary<string,string> 
+ 	{ 
         {@"a1_robinson_storage\","Garage Early"},
         {@"a1_subbasement\","Basement 1"},
         {@"a1_subbasement2\","Basement 2"},
@@ -53,24 +54,24 @@ startup
         {@"a2_lizzy_boss\","Puzzle Skip"},
         {@"a2_prometheus\","Prometheus"},
         {@"a3_robinson\","Mega Dorris"},
-};
- vars.missions1A = new List<string>();
-        foreach (var Tag in vars.missions1) {
-        settings.Add(Tag.Key, true, Tag.Value, "l2");
-        vars.missions1A.Add(Tag.Key);
-        };
+	};
+ 	foreach (var Tag in vars.missions1)
+	{
+		settings.Add(Tag.Key, true, Tag.Value, "l2");
+    };
 }
 
 
 init
 {
- vars.doneMaps = new List<string>(); 
- vars.doneMaps2 = new List<string>(); 
+	vars.doneMaps = new List<string>(); 
+	vars.doneMaps2 = new List<string>(); 
 }
 
 start
 {
- if ((current.maps == "a1_egypt")) {
+	if (current.maps == "a1_egypt") 
+	{
         vars.doneMaps.Clear();
         vars.doneMaps2.Clear();
 		vars.doneMaps.Add(current.maps);
@@ -79,41 +80,32 @@ start
     }
 }
 
+
 split
 {
- string currentMap = current.maps;
- string currentMap2 = current.wrbro;
-
-    if ((currentMap != old.maps)) {
-        if (!vars.doneMaps.Contains(currentMap)) {      
-            if (settings[currentMap.Trim()]) {
-            if (vars.missions5A.Contains(currentMap)) {
-                vars.doneMaps.Add(currentMap);
-                    return true;
-                    }
-            else {
-                return false;
-                 }
-            }
-        }
-    }
-
-  if ((currentMap2 != old.wrbro)) {
-        if (!vars.doneMaps2.Contains(currentMap2)) {      
-            if (settings[currentMap2.Trim()]) {
-            if (vars.missions1A.Contains(currentMap2)) {
-                vars.doneMaps2.Add(currentMap2);
-                    return true;
-                    }
-            else {
-                return false;
-                 }
-            }
-        }
-    }
-
+	if (settings["All Levels"])
+	{
+		if (current.map != old.map) 
+		{
+			if (settings[current.map]) 
+			{
+				vars.doneMaps.Add(old.map);
+				return true;	
+			}	
+		}
+	}
+	else
+	{
+		if (current.wrbro != old.wrbro) 
+		{
+			if (settings[current.wrbro]) 
+			{
+				vars.doneMaps2.Add(old.wrbro);
+				return true;	
+			}	
+		}
+	}
 }
-
 
 reset
 {
