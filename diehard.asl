@@ -1,6 +1,6 @@
 state("Lithtech")
 {
-    string30 maps : 0x000D739C, 0x30, 0x54, 0x48, 0x120, 0x20, 0x4;
+    string30 map : 0x000D739C, 0x30, 0x54, 0x48, 0x120, 0x20, 0x4;
     bool isLoading : 0xE1AF8;
 }
 
@@ -55,10 +55,10 @@ init
 
 start
 {
-   if ((current.maps == @"ds\map1.aiw") && (current.isLoading == false)) 
+   if ((current.map == @"ds\map1.aiw") && (current.isLoading == false)) 
    {
         vars.doneMaps.Clear();
-		vars.doneMaps.Add(current.maps);
+		vars.doneMaps.Add(current.map);
         return true;
     }
 }
