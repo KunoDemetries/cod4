@@ -1,6 +1,6 @@
 state("wilbur")
 {
-string50 maps : 0x328810;
+string50 map : 0x328810;
 string50 wrbro : 0x328897;
 byte loading1 : 0x2FBC5C;
 }
@@ -70,11 +70,11 @@ init
 
 start
 {
-	if (current.maps == "a1_egypt") 
+	if (current.map == "a1_egypt") 
 	{
         vars.doneMaps.Clear();
         vars.doneMaps2.Clear();
-		vars.doneMaps.Add(current.maps);
+		vars.doneMaps.Add(current.map);
         vars.doneMaps2.Add(current.wrbro);
         return true;
     }
@@ -109,7 +109,7 @@ split
 
 reset
 {
-    return (current.maps == "fronted");
+    return (current.map == "fronted");
 }
 
 isLoading
