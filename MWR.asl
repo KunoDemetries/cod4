@@ -46,6 +46,13 @@ init
     }
 
     vars.doneMaps = new List<string>(); 
+	vars.coupOffset = false;
+	vars.currentTime = new TimeSpan(0, 0, 0);
+}
+
+update 
+{
+	vars.currentTime = timer.CurrentTime.GameTime;	//keep the variable updated with the current time on the timer
 }
 
 startup 
@@ -111,15 +118,31 @@ startup
     };
 }
 
-split
+split 
 {
+
 	if (current.map != old.map) 
 	{
-		if (settings[current.map]) 
+		if (current.map == "coup") 
 		{
-			vars.doneMaps.Add(old.map);
-			return true;	
-		}	
+			vars.currentTime = timer.CurrentTime.GameTime;	
+			vars.coupOffset = true;
+			
+			if (settings["coup"]) 
+			{				
+				vars.doneMaps.Add(old.map);		
+				return true;
+			}
+		}
+		else 
+		{
+			if (settings[current.map]) 
+			{	
+				vars.doneMaps.Add(old.map);
+				return true;
+			}
+		}
+		
 	}
 }   
 
@@ -145,5 +168,13 @@ start
 	if ((version == "default") && (current.loading1 == 0))
 	{
 		return true;
+	}
+}
+
+
+gameTime {
+	if (vars.coupOffset == true) {					
+		vars.coupOffset = false;				
+		return vars.currentTime.Add(new TimeSpan (0, 4, 45));	
 	}
 }
