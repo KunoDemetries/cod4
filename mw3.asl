@@ -1,25 +1,31 @@
  state("iw5sp")
 {
-   int loading1 : 0x19ECCC4;
+	int loading1 : 0x19ECCC4;
 	string200 map : 0xB23C64;
 	string200 map2 : 0xB23D0B;
 	int poser : 0x18002C3;
 	int dad : 0x5AC158;
 }
 
-startup {
-vars.diamond1 = new Dictionary<string,string> { 
+startup 
+{
+
+	settings.Add("missions", true, "Missions");
+
+	vars.diamond1 = new Dictionary<string,string> 
+	{ 
 		{"harbor", "Hunter Killer"}, 
 		{"ro", "Persona Non Grata"},
-};
+	};
 
- vars.diamondaList = new List<string>();
-		   foreach (var Tag in vars.diamond1) {
-        settings.Add(Tag.Key, true, Tag.Value);
-        vars.diamondaList.Add(Tag.Key); };
+ 	foreach (var Tag in vars.diamond1)
+	{
+		settings.Add(Tag.Key, true, Tag.Value, "missions");
+    };
 
 
-vars.diamond2 = new Dictionary<string,string> { 
+	vars.diamond2 = new Dictionary<string,string> 
+	{ 
 		{"hijack", "Turbulence"},
 		{"sp_warlord", "Back on the Grid"},
 		{"london", "Mind the Gap"},
@@ -33,27 +39,49 @@ vars.diamond2 = new Dictionary<string,string> {
 		{"sp_berlin", "Scorched Earth"},
 		{"rescue_2", "Down the Rabbit Hole"},
 		{"dubai", "Dust to Dust"},
-		};  
-	 vars.diamondbList = new List<string>();
-		   foreach (var Tag in vars.diamond2) {
-        settings.Add(Tag.Key, true, Tag.Value);
-        vars.diamondbList.Add(Tag.Key); };
- }
+	};  
+ 	foreach (var Tag in vars.diamond2)
+	{
+		settings.Add(Tag.Key, true, Tag.Value, "missions");
+    };
+}
 
-
-split 
+init
 {
- return (vars.diamondbList.Contains(current.map) && (current.map != old.map)) || 
- (vars.diamondaList.Contains(current.map2) && (current.map2 != old.map2)) ||
- ((current.loading1 == 0) && (current.map != old.map) && (old.map == "prague_escape"));
+	vars.doneMaps = new List<string>(); 
+}
+
+split
+{
+	if (current.map != old.map) 
+	{
+		if (settings[current.map]) 
+		{
+			vars.doneMaps.Add(old.map);
+			return true;	
+		}	
+	}
+	
+	if (current.map2 != old.map2) 
+	{
+		if (settings[current.map2]) 
+		{
+			vars.doneMaps.Add(old.map2);
+			return true;	
+		}	
+	}
 }
  
- start
+start
 {
-return ((current.map == "sp_ny_manhattan") && (current.dad != 0) && (current.loading1 != 0));
+	if ((current.map == "sp_ny_manhattan") && (current.dad != 0) && (current.loading1 != 0))
+	{
+		vars.doneMaps.Clear();
+		return true;		
+	}
 }
  
- reset
+reset
 {
     return ((current.poser == 0) && (old.poser != 0));
 }
