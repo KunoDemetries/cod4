@@ -4,8 +4,11 @@ state("CoD2SP_s")
 	int loading1 : 0x415010;
 }
 
-startup {
-		vars.missions = new Dictionary<string,string> { 
+startup 
+{
+	settings.Add("missions", true, "Missions");
+
+	vars.missions = new Dictionary<string,string> { 
 		{"demolition", "Demolition"},
 		{"tunkhunt", "Repairing the Wire"},
 		{"trainyard", "The Pipeline"},
@@ -32,31 +35,48 @@ startup {
 		{"hill400_assault", "Rangers Lead the Way"}, 
 		{"hill400_defend", " The Battle for Hill 400"},
 		{"rhine", " Crossing the Rhine"},
-		}; 
-		  vars.missionList = new List<string>();
-		   foreach (var Tag in vars.missions) {
-        settings.Add(Tag.Key, true, Tag.Value);
-        vars.missionList.Add(Tag.Key); };
-		vars.splits = new List<string>();
- 	  }
+	}; 
+	foreach (var Tag in vars.missions)
+	{
+		settings.Add(Tag.Key, true, Tag.Value, "missions");
+    };
+}
+
+init
+{
+	vars.doneMaps = new List<string>(); 
+
+}
 
 start
 {
-	return ((current.map == "moscow") && (old.map == "movie_eastern"));
+	if ((current.map == "moscow") && (old.map == "movie_eastern"))
+	{
+		vars.doneMaps.Clear();
+		return true;
+	}
+}
+
+split
+{
+	if (current.map != old.map) 
+	{
+		if (settings[current.map])
+		{
+			vars.doneMaps.Add(old.map);
+			return true;				
+		}
 	}
 
- split {
-    return (vars.missionList.Contains(current.map) && (current.map != old.map)) || (current.map == "credits");
-	}
+	return (current.map == "credits");
+}
  
 reset
 {
 	return ((current.map == "movie_eastern") && (old.map != "movie_eastern"));
-	}
+}
 
 isLoading
 {
 	return (current.loading1 == 0);
-	}
-
-// IG with some help from Alexyeahnot (big on the "IG")
+}
