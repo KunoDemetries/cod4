@@ -1,14 +1,15 @@
 state("s2_sp64_ship")
 {
 	string200 map: 0x6A122B4;
-    int loading1:  0x2AB9B44;
+   	int loading1:  0x2AB9B44;
 }
 
 startup 
 {
 	settings.Add("missions", true, "Missions");
 
-	vars.missions = new Dictionary<string,string> {  
+	vars.missions = new Dictionary<string,string> 
+	{  
 		{"cobra", "Operation Cobra"}, 
 		{"marigny", "Stronghold"},
 		{"train", "S.O.E."},
@@ -19,8 +20,8 @@ startup
 		{"bulge", "Battle of The Bulge"},
 		{"taken", "Ambush"},
 		{"taken_tent", "The Rhine"},
-        {"labor_camp", "Epilogue"},
-		};  
+        	{"labor_camp", "Epilogue"},
+	};  
 
  	foreach (var Tag in vars.missions)
 	{
