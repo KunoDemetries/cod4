@@ -36,7 +36,7 @@ init
 
 start
 {
-    if ((current.map1 == "Church_01.World00p") && (current.loading1 != 0) && (current.cutscene != 0))
+    if ((current.map1 == "Church_01.World00p") && (current.loading1 != 0) && (current.cutscene == 0))
 	{
 		vars.doneMaps.Clear();
 		return true;
