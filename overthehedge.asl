@@ -2,14 +2,16 @@ state("hedge")
 {
     int levels : 0x3338B4;
     byte loading1 : 0x358CD4;
+    byte endsplit : 0x2E5BA4; //11
 }
 
 startup
-    {
+{
 
-        settings.Add("l1", true, "Missions");
+    settings.Add("l1", true, "Missions");
 
-        vars.missions5 = new Dictionary<string,string> { 
+    vars.missions5 = new Dictionary<string,string> 
+    { 
         {"4","Inside Gladys' House"},
         {"5","Escape!"},
         {"6","Caught in the Hedge!"},
@@ -44,11 +46,10 @@ startup
         {"35","Protect The Woods!"},
         {"36","Vermtech Heist"},
         {"37","Rescue Heather!"},
-};
-   vars.missions5A = new List<string>();
-    foreach (var Tag in vars.missions5) {
-    settings.Add(Tag.Key, true, Tag.Value, "l1");
-    vars.missions5A.Add(Tag.Key);
+    };
+ 	foreach (var Tag in vars.missions5)
+	{
+		settings.Add(Tag.Key, true, Tag.Value, "l1");
     };
 }
 
@@ -59,33 +60,32 @@ init
 
 start
 {
-    if ((current.levels == 3) && (current.loading1 == 1)) {
-        {
-         vars.doneMaps.Clear();
+    if ((current.levels == 3) && (current.loading1 == 1)) 
+    {
+        vars.doneMaps.Clear();
 		vars.doneMaps.Add(current.levels.ToString());
         return true;
     }
-    }
 }
 
-split 
+split
 {
- string currentMap = current.levels.ToString();
+     string currentMap = current.levels.ToString();
 
-        if ((currentMap != old.levels.ToString())) {
-        if (!vars.doneMaps.Contains(currentMap)) {      
-        if (settings[currentMap.Trim()]) {
-        if (vars.missions5A.Contains(currentMap)) {
-             vars.doneMaps.Add(currentMap);
+	if (current.levels != old.levels) 
+	{
+		if (settings[currentMap]) 
+		{
+			vars.doneMaps.Add(currentMap);
+			return true;	
+		}	
+	}
+    
+    if ((current.levels == 37) && (current.endsplit == 11))
+    {
         return true;
-        }
-        else {
-        return false;
-        }
-        }
-        }
-        }
     }
+}
 
 reset
 {
